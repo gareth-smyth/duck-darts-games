@@ -10,4 +10,6 @@ export interface ScoringDart {
     modifier: DartBoardSegmentModifier;
 }
 
-export interface MissedDart {}
+export interface MissedDart {
+    miss: true;
+}
