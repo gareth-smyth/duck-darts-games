@@ -1,13 +1,13 @@
 export interface RoundTheClockScoreBoard {
-  scores: RoundTheClockScore[],
+    scores: RoundTheClockScore[];
 }
 
 export interface RoundTheClockScore {
-  team: string,
-  nextRequiredScore: RoundTheClockDart[],
+    team: string;
+    nextRequiredScore: RoundTheClockDart[];
 }
 
 export interface RoundTheClockDart {
-  value: number,
-  modifier: number,
+    value: number;
+    modifier: number;
 }

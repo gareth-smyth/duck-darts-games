@@ -1,4 +1,4 @@
 export enum GameStatus {
-  IN_PROGRESS,
-  WAITING_TO_START,
+    IN_PROGRESS,
+    WAITING_TO_START,
 }
