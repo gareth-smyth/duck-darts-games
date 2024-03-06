@@ -1,13 +1,8 @@
-export interface RoundTheClockScoreBoard {
-    scores: RoundTheClockScore[];
-}
+import { DartScore } from './dart-score';
 
-export interface RoundTheClockScore {
+export type RoundTheClockScoreBoard = RoundTheClockScoreBoardForTeam[];
+
+export interface RoundTheClockScoreBoardForTeam {
     team: string;
-    nextRequiredScore: RoundTheClockDart[];
-}
-
-export interface RoundTheClockDart {
-    value: number;
-    modifier: number;
+    nextRequiredScore: DartScore[];
 }
