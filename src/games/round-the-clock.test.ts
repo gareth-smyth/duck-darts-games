@@ -23,7 +23,7 @@ it('starts a game with a fresh score board', () => {
     });
 });
 
-it('it advances scores through to the next player', () => {
+it('it updates the score after a dart', () => {
     // Arrange
     const newGame = new RoundTheClock([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
