@@ -15,10 +15,7 @@ declare global {
 }
 
 expect.extend({
-    toHaveTeams(
-        received: RoundTheClockScoreBoard,
-        expected: string[],
-    ): jest.CustomMatcherResult {
+    toHaveTeams(received: RoundTheClockScoreBoard, expected: string[]): jest.CustomMatcherResult {
         const receivedTeams = received.map((score) => score.team);
 
         const pass = equal(expected, receivedTeams);

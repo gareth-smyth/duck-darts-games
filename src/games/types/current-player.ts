@@ -1,7 +1,7 @@
 import { DartScore } from './dart-score';
 
 export interface CurrentPlayer {
-    team: string;
-    player: string;
+    teamId: string;
+    id: string;
     dartsThrown: DartScore[];
 }

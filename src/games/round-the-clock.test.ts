@@ -17,8 +17,8 @@ it('starts a game with a fresh score board', () => {
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '1',
-        player: '3',
+        teamId: '1',
+        id: '3',
         dartsThrown: [],
     });
 });
@@ -38,8 +38,8 @@ it('it updates the score after a single', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '1',
-        player: '3',
+        teamId: '1',
+        id: '3',
         dartsThrown: [{ value: 1, modifier: 1 }],
     });
     expect(scoreBoard).toHaveScores([AllDartsOfValue(2), AllDartsOfValue(1)]);
@@ -60,8 +60,8 @@ it('it updates the score after a double', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '1',
-        player: '3',
+        teamId: '1',
+        id: '3',
         dartsThrown: [{ value: 1, modifier: 2 }],
     });
     expect(scoreBoard).toHaveScores([AllDartsOfValue(3), AllDartsOfValue(1)]);
@@ -82,8 +82,8 @@ it('it updates the score after a treble', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '1',
-        player: '3',
+        teamId: '1',
+        id: '3',
         dartsThrown: [{ value: 1, modifier: 3 }],
     });
     expect(scoreBoard).toHaveScores([AllDartsOfValue(4), AllDartsOfValue(1)]);
@@ -104,8 +104,8 @@ it('it does not change the score after the wrong dart', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '1',
-        player: '3',
+        teamId: '1',
+        id: '3',
         dartsThrown: [{ value: 10, modifier: 1 }],
     });
     expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
@@ -126,14 +126,14 @@ it('it does not change the score after a miss', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '1',
-        player: '3',
+        teamId: '1',
+        id: '3',
         dartsThrown: [{ miss: true }],
     });
     expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
 });
 
-it('it changes player after three darts', () => {
+it('it changes team after three darts', () => {
     // Arrange
     const newGame = new RoundTheClock([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
@@ -150,8 +150,45 @@ it('it changes player after three darts', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
     expect(newGame.getCurrentPlayer()).toEqual({
-        team: '2',
-        player: '4',
+        teamId: '2',
+        id: '4',
+        dartsThrown: [],
+    });
+    expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
+});
+
+it('it changes players in rotation', () => {
+    // Arrange
+    const newGame = new RoundTheClock([
+        { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
+        {
+            id: '2',
+            name: 'Team 2',
+            players: [
+                { id: '4', name: 'Player B' },
+                { id: '5', name: 'Player C' },
+            ],
+        },
+    ]);
+    newGame.start();
+
+    // Act
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+
+    // Assert
+    const scoreBoard = newGame.getScoreBoard();
+    expect(scoreBoard).toHaveTeams(['1', '2']);
+    expect(newGame.getCurrentPlayer()).toEqual({
+        teamId: '2',
+        id: '5',
         dartsThrown: [],
     });
     expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);

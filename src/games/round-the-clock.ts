@@ -3,15 +3,13 @@ import { RoundTheClockScoreBoard } from './types/round-the-clock-score-board';
 import { DartScore } from './types/dart-score';
 import { CurrentPlayer } from './types/current-player';
 import { RoundTheClockScore } from './types/round-the-clock-score';
-import {
-    DartBoardSegment,
-    DartBoardSegmentModifier,
-} from './types/dart-board-segment';
+import { DartBoardSegment, DartBoardSegmentModifier } from './types/dart-board-segment';
 
 export class RoundTheClock {
     private readonly scores: RoundTheClockScore;
     private readonly teams: Team[];
     private currentPlayer: CurrentPlayer;
+    private lastPlayers: Record<string, number>;
 
     constructor(teams: Team[]) {
         this.teams = teams;
@@ -21,9 +19,11 @@ export class RoundTheClock {
             neededScore: 1,
         }));
 
+        this.lastPlayers = {};
+
         this.currentPlayer = {
-            team: teams[0].id,
-            player: teams[0].players[0].id,
+            teamId: teams[0].id,
+            id: teams[0].players[0].id,
             dartsThrown: [],
         };
     }
@@ -37,7 +37,7 @@ export class RoundTheClock {
     }
 
     private updateNeededScore(amount: DartBoardSegmentModifier) {
-        const scoreForTeam = this.getScoreForTeam(this.currentPlayer.team);
+        const scoreForTeam = this.getScoreForTeam(this.currentPlayer.teamId);
         scoreForTeam.neededScore += amount;
     }
 
@@ -59,16 +59,25 @@ export class RoundTheClock {
     }
 
     private nextPlayer() {
-        const currentTeamIdx = this.teams.findIndex(
-            (team) => team.id === this.currentPlayer.team,
+        const currentTeamIndex = this.teams.findIndex(
+            (team) => team.id === this.currentPlayer.teamId,
+        )!;
+        const currentTeam = this.teams[currentTeamIndex];
+
+        this.lastPlayers[this.currentPlayer.teamId] = currentTeam.players.findIndex(
+            (player) => player.id === this.currentPlayer.id,
         )!;
 
-        const nextTeamIndex =
-            currentTeamIdx === this.teams.length - 1 ? 0 : currentTeamIdx + 1;
+        const nextTeamIndex = currentTeamIndex === this.teams.length - 1 ? 0 : currentTeamIndex + 1;
+        const nextTeam = this.teams[nextTeamIndex];
+
+        const lastPlayerIndex = this.lastPlayers[nextTeam.id] || 0;
+        const nextPlayerIndex =
+            lastPlayerIndex === nextTeam.players.length - 1 ? 0 : lastPlayerIndex + 1;
 
         this.currentPlayer = {
-            team: this.teams[nextTeamIndex].id,
-            player: this.teams[nextTeamIndex].players[0].id,
+            teamId: nextTeam.id,
+            id: nextTeam.players[nextPlayerIndex].id,
             dartsThrown: [],
         };
     }
@@ -76,9 +85,7 @@ export class RoundTheClock {
     dartThrown(dart: DartScore) {
         this.currentPlayer.dartsThrown.push(dart);
         if ('value' in dart) {
-            const neededScore = this.getTeamNeededScore(
-                this.currentPlayer.team,
-            );
+            const neededScore = this.getTeamNeededScore(this.currentPlayer.teamId);
             if (neededScore === dart.value) {
                 this.updateNeededScore(dart.modifier);
             }

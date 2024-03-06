@@ -1,7 +1,4 @@
-import {
-    DartBoardSegment,
-    DartBoardSegmentModifier,
-} from './dart-board-segment';
+import { DartBoardSegment, DartBoardSegmentModifier } from './dart-board-segment';
 
 export type DartScore = ScoringDart | MissedDart;
 
