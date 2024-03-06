@@ -1,0 +1,27 @@
+{
+  "name": "duck-darts-web-client",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "lintfix": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": "Gareth Smyth",
+  "license": "",
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-typescript": "^7.23.3",
+    "@types/jest": "^29.5.12",
+    "babel-jest": "^29.7.0",
+    "esbuild": "0.20.1",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.1.1"
+  }
+}
