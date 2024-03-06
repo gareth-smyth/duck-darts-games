@@ -133,6 +133,30 @@ it('it does not change the score after a miss', () => {
     expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
 });
 
+it('it changes player after three darts', () => {
+    // Arrange
+    const newGame = new RoundTheClock([
+        { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
+        { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
+    ]);
+    newGame.start();
+
+    // Act
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+    newGame.dartThrown({ miss: true });
+
+    // Assert
+    const scoreBoard = newGame.getScoreBoard();
+    expect(scoreBoard).toHaveTeams(['1', '2']);
+    expect(newGame.getCurrentPlayer()).toEqual({
+        team: '2',
+        player: '4',
+        dartsThrown: [],
+    });
+    expect(scoreBoard).toHaveScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
+});
+
 function AllDartsOfValue(value: DartBoardSegment): DartScore[] {
     return [
         { value, modifier: 1 },

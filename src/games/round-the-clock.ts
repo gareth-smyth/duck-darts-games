@@ -10,9 +10,12 @@ import {
 
 export class RoundTheClock {
     private readonly scores: RoundTheClockScore;
-    private readonly currentPlayer: CurrentPlayer;
+    private readonly teams: Team[];
+    private currentPlayer: CurrentPlayer;
 
     constructor(teams: Team[]) {
+        this.teams = teams;
+
         this.scores = teams.map((team) => ({
             team: team.id,
             neededScore: 1,
@@ -55,6 +58,21 @@ export class RoundTheClock {
         return this.currentPlayer;
     }
 
+    private nextPlayer() {
+        const currentTeamIdx = this.teams.findIndex(
+            (team) => team.id === this.currentPlayer.team,
+        )!;
+
+        const nextTeamIndex =
+            currentTeamIdx === this.teams.length - 1 ? 0 : currentTeamIdx + 1;
+
+        this.currentPlayer = {
+            team: this.teams[nextTeamIndex].id,
+            player: this.teams[nextTeamIndex].players[0].id,
+            dartsThrown: [],
+        };
+    }
+
     dartThrown(dart: DartScore) {
         this.currentPlayer.dartsThrown.push(dart);
         if ('value' in dart) {
@@ -64,6 +82,10 @@ export class RoundTheClock {
             if (neededScore === dart.value) {
                 this.updateNeededScore(dart.modifier);
             }
+        }
+
+        if (this.currentPlayer.dartsThrown.length === 3) {
+            this.nextPlayer();
         }
     }
 }
