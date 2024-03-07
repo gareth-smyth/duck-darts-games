@@ -1,7 +1,8 @@
-import { RoundTheClockScoreBoard } from '../src/games/types/round-the-clock-score-board';
+import { RoundTheClockScoreBoard } from '../src/games/round-the-clock/types/round-the-clock-score-board';
 import equal from 'fast-deep-equal/es6';
 import { diff } from 'jest-diff';
-import { DartScore } from '../src/games/types/dart-score';
+import { DartScore } from '../src/games/common/types/dart-score';
+import { Finished } from '../src/games/round-the-clock/types/round-the-clock-score';
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -9,7 +10,7 @@ declare global {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         interface Matchers<R> {
             toHaveTeams(expected: string[]): CustomMatcherResult;
-            toHaveScores(expected: DartScore[][]): CustomMatcherResult;
+            toHaveNextRequiredScores(expected: (DartScore[] | Finished)[]): CustomMatcherResult;
         }
     }
 }
@@ -33,7 +34,7 @@ expect.extend({
 });
 
 expect.extend({
-    toHaveScores(
+    toHaveNextRequiredScores(
         received: RoundTheClockScoreBoard,
         expected: DartScore[],
     ): jest.CustomMatcherResult {
