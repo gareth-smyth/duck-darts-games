@@ -2,7 +2,7 @@ import { RoundTheClockScoreBoard } from '../src/games/round-the-clock/types/roun
 import equal from 'fast-deep-equal/es6';
 import { diff } from 'jest-diff';
 import { DartScore } from '../src/games/common/types/dart-score';
-import { Finished } from '../src/games/round-the-clock/types/round-the-clock-score';
+import { Finished } from '../src/games/common/types/game';
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
