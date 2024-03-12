@@ -1,8 +1,9 @@
 import { RoundTheClock } from './round-the-clock';
 
-it('starts a game with a fresh score board', () => {
+it('starts a game with a fresh score board', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
 
     // Act
     newGame.start([
@@ -21,9 +22,10 @@ it('starts a game with a fresh score board', () => {
     });
 });
 
-it('it updates the score after a single', () => {
+it('it updates the score after a single', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -43,9 +45,10 @@ it('it updates the score after a single', () => {
     expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(2), allDartsOfValue(1)]);
 });
 
-it('it updates the score after a double', () => {
+it('it updates the score after a double', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -65,9 +68,10 @@ it('it updates the score after a double', () => {
     expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(3), allDartsOfValue(1)]);
 });
 
-it('it updates the score after a treble', () => {
+it('it updates the score after a treble', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -87,9 +91,10 @@ it('it updates the score after a treble', () => {
     expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(4), allDartsOfValue(1)]);
 });
 
-it('it does not change the score after the wrong dart', () => {
+it('it does not change the score after the wrong dart', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -109,9 +114,10 @@ it('it does not change the score after the wrong dart', () => {
     expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
 });
 
-it('it does not change the score after a miss', () => {
+it('it does not change the score after a miss', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -131,9 +137,10 @@ it('it does not change the score after a miss', () => {
     expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
 });
 
-it('it changes team after three darts', () => {
+it('it changes team after three darts', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -153,9 +160,10 @@ it('it changes team after three darts', () => {
     expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
 });
 
-it('it changes players in rotation', () => {
+it('it changes players in rotation', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         {
@@ -181,9 +189,10 @@ it('it changes players in rotation', () => {
     });
 });
 
-it('marks the player as finished when they need 20 and hit 20', () => {
+it('marks the player as finished when they need 20 and hit 20', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -204,9 +213,10 @@ it('marks the player as finished when they need 20 and hit 20', () => {
     expect(scoreBoard).toHaveNextRequiredScores(['finished']);
 });
 
-it('marks the player as finished when they need 19 and hit double 19', () => {
+it('marks the player as finished when they need 19 and hit double 19', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -226,9 +236,10 @@ it('marks the player as finished when they need 19 and hit double 19', () => {
     expect(scoreBoard).toHaveNextRequiredScores(['finished']);
 });
 
-it('marks the player as finished when they need 18 and hit treble 18', () => {
+it('marks the player as finished when they need 18 and hit treble 18', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },

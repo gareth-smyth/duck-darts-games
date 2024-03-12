@@ -5,21 +5,40 @@ import { CurrentPlayer } from '../common/types/current-player';
 import { RoundTheClockScore } from './types/round-the-clock-score';
 import { DartBoardSegment, DartBoardSegmentModifier } from '../common/types/dart-board-segment';
 import { Finished, Game } from '../common/types/game';
-import { GameOptions } from '../common/types/game-options';
+import Configuration, {
+    GameType,
+    RoundTheClockConfiguration,
+} from './round-the-clock-configuration';
 
 export class RoundTheClock implements Game {
     private scores: RoundTheClockScore = [];
     private teams: Team[] = [];
     private currentPlayer: CurrentPlayer = { teamId: '', id: '', dartsThrown: [] };
     private lastPlayers: Record<string, number> = {};
+    private singleValue: number = 0;
+    private doubleValue: number = 0;
+    private trebleValue: number = 0;
 
-    constructor(
-        private readonly gameOptions: GameOptions = {
-            singles: 1,
-            doubles: 2,
-            trebles: 3,
+    async configure(
+        gameOptions: RoundTheClockConfiguration = {
+            mainGameType: GameType.Singles,
+            doublesAndTreblesCountExtra: true,
         },
-    ) {}
+    ) {
+        const validatedOptions = await Configuration.validate(gameOptions);
+
+        if (validatedOptions.mainGameType === GameType.Singles) {
+            this.singleValue = 1;
+            if (validatedOptions.doublesAndTreblesCountExtra) {
+                this.doubleValue = 2;
+                this.trebleValue = 3;
+            }
+        } else if (validatedOptions.mainGameType === GameType.Doubles) {
+            this.doubleValue = 1;
+        } else if (validatedOptions.mainGameType === GameType.Trebles) {
+            this.trebleValue = 1;
+        }
+    }
 
     start(teams: Team[]) {
         this.teams = teams;
@@ -49,11 +68,11 @@ export class RoundTheClock implements Game {
                     value: DartBoardSegment;
                     modifier: DartBoardSegmentModifier;
                 }[] = [];
-                this.gameOptions.singles &&
+                this.singleValue &&
                     nextRequiredScore.push({ value: score.neededScore, modifier: 1 });
-                this.gameOptions.doubles &&
+                this.doubleValue &&
                     nextRequiredScore.push({ value: score.neededScore, modifier: 2 });
-                this.gameOptions.trebles &&
+                this.trebleValue &&
                     nextRequiredScore.push({ value: score.neededScore, modifier: 3 });
                 return {
                     team: score.team,
@@ -84,11 +103,11 @@ export class RoundTheClock implements Game {
     private getModifierScoreFromOptions(modifier: DartBoardSegmentModifier): number {
         switch (modifier) {
             case 1:
-                return Number(this.gameOptions.singles);
+                return Number(this.singleValue);
             case 2:
-                return Number(this.gameOptions.doubles);
+                return Number(this.doubleValue);
             case 3:
-                return Number(this.gameOptions.trebles);
+                return Number(this.trebleValue);
         }
     }
 

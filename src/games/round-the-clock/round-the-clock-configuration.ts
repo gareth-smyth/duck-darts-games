@@ -9,17 +9,19 @@ export enum GameType {
 
 class NotAllowedType extends Schema {}
 
+export interface RoundTheClockConfiguration {
+    mainGameType: GameType;
+    doublesAndTreblesCountExtra?: boolean;
+}
+
 export default new Configuration(
-    object({
+    object<RoundTheClockConfiguration>({
         mainGameType: mixed<GameType>()
             .oneOf(Object.values(GameType) as GameType[])
             .default(GameType.Singles)
             .required(),
         doublesAndTreblesCountExtra: boolean().when('mainGameType', {
-            is: (mainGameType) => {
-                console.log(mainGameType);
-                return mainGameType === GameType.Doubles || mainGameType === GameType.Trebles;
-            },
+            is: GameType.Singles,
             then: (doublesAndTreblesCountExtra) =>
                 doublesAndTreblesCountExtra.required().default(true),
             otherwise: () =>
