@@ -1,10 +1,9 @@
 import { RoundTheClock } from './round-the-clock';
-import { DartBoardSegment } from '../common/types/dart-board-segment';
-import { DartScore } from '../common/types/dart-score';
 
-it('starts a game with a fresh score board', () => {
+it('starts a game with a fresh score board', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
 
     // Act
     newGame.start([
@@ -15,7 +14,7 @@ it('starts a game with a fresh score board', () => {
     // Assert
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveTeams(['1', '2']);
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
     expect(newGame.getCurrentPlayer()).toEqual({
         teamId: '1',
         id: '3',
@@ -23,9 +22,10 @@ it('starts a game with a fresh score board', () => {
     });
 });
 
-it('it updates the score after a single', () => {
+it('it updates the score after a single', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -42,12 +42,13 @@ it('it updates the score after a single', () => {
         id: '3',
         dartsThrown: [{ value: 1, modifier: 1 }],
     });
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(2), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(2), allDartsOfValue(1)]);
 });
 
-it('it updates the score after a double', () => {
+it('it updates the score after a double', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -64,12 +65,13 @@ it('it updates the score after a double', () => {
         id: '3',
         dartsThrown: [{ value: 1, modifier: 2 }],
     });
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(3), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(3), allDartsOfValue(1)]);
 });
 
-it('it updates the score after a treble', () => {
+it('it updates the score after a treble', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -86,12 +88,13 @@ it('it updates the score after a treble', () => {
         id: '3',
         dartsThrown: [{ value: 1, modifier: 3 }],
     });
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(4), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(4), allDartsOfValue(1)]);
 });
 
-it('it does not change the score after the wrong dart', () => {
+it('it does not change the score after the wrong dart', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -108,12 +111,13 @@ it('it does not change the score after the wrong dart', () => {
         id: '3',
         dartsThrown: [{ value: 10, modifier: 1 }],
     });
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
 });
 
-it('it does not change the score after a miss', () => {
+it('it does not change the score after a miss', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -130,12 +134,13 @@ it('it does not change the score after a miss', () => {
         id: '3',
         dartsThrown: [{ miss: true }],
     });
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
 });
 
-it('it changes team after three darts', () => {
+it('it changes team after three darts', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -152,12 +157,13 @@ it('it changes team after three darts', () => {
         id: '4',
         dartsThrown: [],
     });
-    expect(scoreBoard).toHaveNextRequiredScores([AllDartsOfValue(1), AllDartsOfValue(1)]);
+    expect(scoreBoard).toHaveNextRequiredScores([allDartsOfValue(1), allDartsOfValue(1)]);
 });
 
-it('it changes players in rotation', () => {
+it('it changes players in rotation', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         {
@@ -183,9 +189,10 @@ it('it changes players in rotation', () => {
     });
 });
 
-it('marks the player as finished when they need 20 and hit 20', () => {
+it('marks the player as finished when they need 20 and hit 20', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -197,7 +204,7 @@ it('marks the player as finished when they need 20 and hit 20', () => {
         { value: 19, modifier: 1 },
     ]);
     const setupScoreBoard = newGame.getScoreBoard();
-    expect(setupScoreBoard).toHaveNextRequiredScores([AllDartsOfValue(20)]);
+    expect(setupScoreBoard).toHaveNextRequiredScores([allDartsOfValue(20)]);
 
     // Act
     newGame.dartThrown({ value: 20, modifier: 1 });
@@ -206,9 +213,10 @@ it('marks the player as finished when they need 20 and hit 20', () => {
     expect(scoreBoard).toHaveNextRequiredScores(['finished']);
 });
 
-it('marks the player as finished when they need 19 and hit double 19', () => {
+it('marks the player as finished when they need 19 and hit double 19', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -219,7 +227,7 @@ it('marks the player as finished when they need 19 and hit double 19', () => {
         { value: 16, modifier: 3 },
     ]);
     const setupScoreBoard = newGame.getScoreBoard();
-    expect(setupScoreBoard).toHaveNextRequiredScores([AllDartsOfValue(19)]);
+    expect(setupScoreBoard).toHaveNextRequiredScores([allDartsOfValue(19)]);
 
     // Act
     newGame.dartThrown({ value: 19, modifier: 2 });
@@ -228,9 +236,10 @@ it('marks the player as finished when they need 19 and hit double 19', () => {
     expect(scoreBoard).toHaveNextRequiredScores(['finished']);
 });
 
-it('marks the player as finished when they need 18 and hit treble 18', () => {
+it('marks the player as finished when they need 18 and hit treble 18', async () => {
     // Arrange
     const newGame = new RoundTheClock();
+    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -241,7 +250,7 @@ it('marks the player as finished when they need 18 and hit treble 18', () => {
         { value: 16, modifier: 2 },
     ]);
     const setupScoreBoard = newGame.getScoreBoard();
-    expect(setupScoreBoard).toHaveNextRequiredScores([AllDartsOfValue(18)]);
+    expect(setupScoreBoard).toHaveNextRequiredScores([allDartsOfValue(18)]);
 
     // Act
     newGame.dartThrown({ value: 18, modifier: 3 });
@@ -249,19 +258,3 @@ it('marks the player as finished when they need 18 and hit treble 18', () => {
     const scoreBoard = newGame.getScoreBoard();
     expect(scoreBoard).toHaveNextRequiredScores(['finished']);
 });
-
-function AllDartsOfValue(value: DartBoardSegment): DartScore[] {
-    return [
-        { value, modifier: 1 },
-        { value, modifier: 2 },
-        { value, modifier: 3 },
-    ];
-}
-
-function completeTurn(game: RoundTheClock) {
-    throwDarts(game, [{ miss: true }, { miss: true }, { miss: true }]);
-}
-
-function throwDarts(game: RoundTheClock, darts: DartScore[]) {
-    darts.forEach((dart) => game.dartThrown(dart));
-}
