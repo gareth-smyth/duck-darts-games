@@ -3,8 +3,7 @@ import { GameType } from './round-the-clock-configuration';
 
 it('handles a game where only trebles count, and they count as one.', async () => {
     // Arrange
-    const newGame = new RoundTheClock();
-    await newGame.configure({ mainGameType: GameType.Trebles });
+    const newGame = new RoundTheClock({ mainGameType: GameType.Trebles });
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
 
     // Act

@@ -1,26 +1,29 @@
-import Configuration from '../common/configuration';
-import { boolean, mixed, object, Schema } from 'yup';
+import { boolean, object, Schema, string } from 'yup';
+import { GameConfiguration } from '../common/types/game';
 
 export enum GameType {
-    Singles,
-    Doubles,
-    Trebles,
+    Singles = 'Singles',
+    Doubles = 'Doubles',
+    Trebles = 'Trebles',
 }
 
 class NotAllowedType extends Schema {}
 
-export interface RoundTheClockConfiguration {
+export interface RoundTheClockConfiguration extends GameConfiguration {
     mainGameType: GameType;
     doublesAndTreblesCountExtra?: boolean;
 }
 
-export default new Configuration(
-    object<RoundTheClockConfiguration>({
-        mainGameType: mixed<GameType>()
-            .oneOf(Object.values(GameType) as GameType[])
-            .default(GameType.Singles)
-            .required(),
-        doublesAndTreblesCountExtra: boolean().when('mainGameType', {
+export default object<RoundTheClockConfiguration>({
+    mainGameType: string<GameType>()
+        .label('Game type')
+        .oneOf(Object.values(GameType) as GameType[])
+        .default(GameType.Singles)
+        .required(),
+    doublesAndTreblesCountExtra: boolean()
+        .label('Doubles and Trebles skip')
+        .default(true)
+        .when('mainGameType', {
             is: GameType.Singles,
             then: (doublesAndTreblesCountExtra) =>
                 doublesAndTreblesCountExtra.required().default(true),
@@ -30,5 +33,4 @@ export default new Configuration(
                     check: (value): value is NonNullable<undefined> => value === null,
                 }),
         }),
-    }),
-);
+});

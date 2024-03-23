@@ -1,6 +1,6 @@
 {
   "name": "duck-darts-games",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "",
   "scripts": {
@@ -8,6 +8,17 @@
     "lint": "eslint .",
     "lintfix": "eslint . --fix",
     "build": "rollup -c rollup.config.js"
+  },
+  "types": "dist/main.d.ts",
+  "main": "dist/main.js",
+  "exports": {
+    ".": {
+      "require": "./dist/main.js",
+      "import": "./dist/main.js",
+      "types": "./dist/main.d.ts",
+      "default": "./dist/main.js"
+    },
+    "./package.json": "./package.json"
   },
   "keywords": [],
   "author": "Gareth Smyth",
@@ -19,7 +30,6 @@
     "@eslint/js": "^8.57.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.6",
     "@types/jest": "^29.5.12",
     "babel-jest": "^29.7.0",
     "esbuild": "0.20.1",
@@ -30,11 +40,10 @@
     "jest": "^29.7.0",
     "prettier": "3.2.5",
     "rollup": "^4.12.1",
+    "rollup-plugin-ts": "^3.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "typescript-eslint": "^7.1.1",
     "yup": "^1.4.0"
-  },
-  "dependencies": {
   }
 }

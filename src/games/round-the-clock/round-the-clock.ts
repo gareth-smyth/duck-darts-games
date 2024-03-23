@@ -4,40 +4,40 @@ import { DartScore } from '../common/types/dart-score';
 import { CurrentPlayer } from '../common/types/current-player';
 import { RoundTheClockScore } from './types/round-the-clock-score';
 import { DartBoardSegment, DartBoardSegmentModifier } from '../common/types/dart-board-segment';
-import { Finished, Game } from '../common/types/game';
-import Configuration, {
-    GameType,
-    RoundTheClockConfiguration,
-} from './round-the-clock-configuration';
+import { Finished, Game, GameConfiguration } from '../common/types/game';
+import { GameType } from './round-the-clock-configuration';
+import { GameName } from '../common/types/game-name';
 
 export class RoundTheClock implements Game {
     private scores: RoundTheClockScore = [];
     private teams: Team[] = [];
     private currentPlayer: CurrentPlayer = { teamId: '', id: '', dartsThrown: [] };
     private lastPlayers: Record<string, number> = {};
-    private singleValue: number = 0;
-    private doubleValue: number = 0;
-    private trebleValue: number = 0;
+    private readonly singleValue: number = 0;
+    private readonly doubleValue: number = 0;
+    private readonly trebleValue: number = 0;
 
-    async configure(
-        gameOptions: RoundTheClockConfiguration = {
+    constructor(
+        validatedConfiguration: GameConfiguration = {
             mainGameType: GameType.Singles,
             doublesAndTreblesCountExtra: true,
         },
     ) {
-        const validatedOptions = await Configuration.validate(gameOptions);
-
-        if (validatedOptions.mainGameType === GameType.Singles) {
+        if (validatedConfiguration.mainGameType === GameType.Singles) {
             this.singleValue = 1;
-            if (validatedOptions.doublesAndTreblesCountExtra) {
+            if (validatedConfiguration.doublesAndTreblesCountExtra) {
                 this.doubleValue = 2;
                 this.trebleValue = 3;
             }
-        } else if (validatedOptions.mainGameType === GameType.Doubles) {
+        } else if (validatedConfiguration.mainGameType === GameType.Doubles) {
             this.doubleValue = 1;
-        } else if (validatedOptions.mainGameType === GameType.Trebles) {
+        } else if (validatedConfiguration.mainGameType === GameType.Trebles) {
             this.trebleValue = 1;
         }
+    }
+
+    getName(): GameName {
+        return GameName['Round the Clock'];
     }
 
     start(teams: Team[]) {

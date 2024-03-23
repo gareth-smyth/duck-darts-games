@@ -1,4 +1,4 @@
-import typescript from '@rollup/plugin-typescript';
+import ts from 'rollup-plugin-ts';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -9,5 +9,5 @@ export default {
         format: 'umd',
         name: 'duckDartsGames',
     },
-    plugins: [nodeResolve(), commonjs(), typescript()],
+    plugins: [nodeResolve(), commonjs(), ts()],
 };

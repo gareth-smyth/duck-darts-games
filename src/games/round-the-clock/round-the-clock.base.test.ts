@@ -3,7 +3,6 @@ import { RoundTheClock } from './round-the-clock';
 it('starts a game with a fresh score board', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
 
     // Act
     newGame.start([
@@ -25,7 +24,6 @@ it('starts a game with a fresh score board', async () => {
 it('it updates the score after a single', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -48,7 +46,6 @@ it('it updates the score after a single', async () => {
 it('it updates the score after a double', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -71,7 +68,6 @@ it('it updates the score after a double', async () => {
 it('it updates the score after a treble', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -94,7 +90,6 @@ it('it updates the score after a treble', async () => {
 it('it does not change the score after the wrong dart', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -117,7 +112,6 @@ it('it does not change the score after the wrong dart', async () => {
 it('it does not change the score after a miss', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -140,7 +134,6 @@ it('it does not change the score after a miss', async () => {
 it('it changes team after three darts', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         { id: '2', name: 'Team 2', players: [{ id: '4', name: 'Player B' }] },
@@ -163,7 +156,6 @@ it('it changes team after three darts', async () => {
 it('it changes players in rotation', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([
         { id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] },
         {
@@ -192,7 +184,6 @@ it('it changes players in rotation', async () => {
 it('marks the player as finished when they need 20 and hit 20', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -216,7 +207,6 @@ it('marks the player as finished when they need 20 and hit 20', async () => {
 it('marks the player as finished when they need 19 and hit double 19', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
@@ -239,7 +229,6 @@ it('marks the player as finished when they need 19 and hit double 19', async () 
 it('marks the player as finished when they need 18 and hit treble 18', async () => {
     // Arrange
     const newGame = new RoundTheClock();
-    await newGame.configure();
     newGame.start([{ id: '1', name: 'Team 1', players: [{ id: '3', name: 'Player A' }] }]);
     throwDarts(newGame, [
         { value: 1, modifier: 3 },
