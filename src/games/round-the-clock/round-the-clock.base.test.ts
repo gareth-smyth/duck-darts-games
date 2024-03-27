@@ -201,7 +201,8 @@ it('marks the player as finished when they need 20 and hit 20', async () => {
     newGame.dartThrown({ value: 20, modifier: 1 });
 
     const scoreBoard = newGame.getScoreBoard();
-    expect(scoreBoard).toHaveNextRequiredScores(['finished']);
+    expect(scoreBoard).toHaveNextRequiredScores([[]]);
+    expect(scoreBoard).toHaveFinished([true]);
 });
 
 it('marks the player as finished when they need 19 and hit double 19', async () => {
@@ -223,7 +224,8 @@ it('marks the player as finished when they need 19 and hit double 19', async () 
     newGame.dartThrown({ value: 19, modifier: 2 });
 
     const scoreBoard = newGame.getScoreBoard();
-    expect(scoreBoard).toHaveNextRequiredScores(['finished']);
+    expect(scoreBoard).toHaveNextRequiredScores([[]]);
+    expect(scoreBoard).toHaveFinished([true]);
 });
 
 it('marks the player as finished when they need 18 and hit treble 18', async () => {
@@ -245,5 +247,6 @@ it('marks the player as finished when they need 18 and hit treble 18', async () 
     newGame.dartThrown({ value: 18, modifier: 3 });
 
     const scoreBoard = newGame.getScoreBoard();
-    expect(scoreBoard).toHaveNextRequiredScores(['finished']);
+    expect(scoreBoard).toHaveNextRequiredScores([[]]);
+    expect(scoreBoard).toHaveFinished([true]);
 });

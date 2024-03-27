@@ -1,9 +1,9 @@
-import { DartScore } from '../../common/types/dart-score';
-import { Finished } from '../../common/types/game';
+import { ScoringDart } from '../../common/types/dart-score';
 
 export type RoundTheClockScoreBoard = RoundTheClockScoreBoardForTeam[];
 
 export interface RoundTheClockScoreBoardForTeam {
     team: string;
-    nextRequiredScore: DartScore[] | Finished;
+    nextRequiredScore: ScoringDart[];
+    finished: boolean;
 }

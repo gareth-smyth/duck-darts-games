@@ -12,6 +12,7 @@ export interface Game {
     getScoreBoard: () => ScoreBoard;
     getCurrentPlayer: () => CurrentPlayer;
     dartThrown: (dart: DartScore) => void;
+    getTeams: () => Team[];
 }
 
 export type ScoreBoard = RoundTheClockScoreBoard;

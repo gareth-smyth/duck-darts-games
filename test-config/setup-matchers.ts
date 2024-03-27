@@ -11,6 +11,7 @@ declare global {
         interface Matchers<R> {
             toHaveTeams(expected: string[]): CustomMatcherResult;
             toHaveNextRequiredScores(expected: (DartScore[] | Finished)[]): CustomMatcherResult;
+            toHaveFinished(expected: boolean[]): CustomMatcherResult;
         }
     }
 }
@@ -46,6 +47,27 @@ expect.extend({
             pass
                 ? ''
                 : `Received scores do not match expected expected:\n ${diff(expected, receivedScore)}`;
+
+        return {
+            message,
+            pass,
+        };
+    },
+});
+
+expect.extend({
+    toHaveFinished(
+        received: RoundTheClockScoreBoard,
+        expected: boolean[],
+    ): jest.CustomMatcherResult {
+        const receivedFinishes = received.map((score) => score.finished);
+
+        const pass = equal(expected, receivedFinishes);
+
+        const message: () => string = () =>
+            pass
+                ? ''
+                : `Received finishes do not match expected expected:\n ${diff(expected, receivedFinishes)}`;
 
         return {
             message,

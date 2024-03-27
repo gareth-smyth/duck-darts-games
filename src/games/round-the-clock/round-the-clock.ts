@@ -40,11 +40,16 @@ export class RoundTheClock implements Game {
         return GameName['Round the Clock'];
     }
 
+    getTeams() {
+        return this.teams;
+    }
+
     start(teams: Team[]) {
         this.teams = teams;
         this.scores = teams.map((team) => ({
             team: team.id,
             neededScore: 1,
+            finished: false,
         }));
 
         this.lastPlayers = {};
@@ -58,10 +63,11 @@ export class RoundTheClock implements Game {
 
     getScoreBoard(): RoundTheClockScoreBoard {
         return this.scores.map((score) => {
-            if (score.neededScore === 'finished') {
+            if (score.finished) {
                 return {
                     team: score.team,
-                    nextRequiredScore: 'finished',
+                    nextRequiredScore: [],
+                    finished: true,
                 };
             } else {
                 const nextRequiredScore: {
@@ -77,6 +83,7 @@ export class RoundTheClock implements Game {
                 return {
                     team: score.team,
                     nextRequiredScore,
+                    finished: false,
                 };
             }
         });
@@ -121,9 +128,9 @@ export class RoundTheClock implements Game {
 
     private updateNeededScore(amount: number) {
         const scoreForTeam = this.getScoreForTeam(this.currentPlayer.teamId);
-        if (scoreForTeam.neededScore !== 'finished') {
+        if (!scoreForTeam.finished) {
             if (scoreForTeam.neededScore + amount > 20) {
-                scoreForTeam.neededScore = 'finished';
+                scoreForTeam.finished = true;
             } else {
                 scoreForTeam.neededScore += amount;
             }
